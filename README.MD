@@ -29,6 +29,6 @@
 > * app实现视频采集、编码压缩、网络传输等核心工作
 > * 各种专业工作（譬如利用内置DSP实现h.264编码压缩）都由海思开发好并以ko的形式提供，有API文档参考，app编写者在sample的帮助下逐步实现自定义的功能。
 
-## 可在此处下载本项目使用的HISI_SDK:[SDK_DOWNLOAD](https://pan.baidu.com/s/1Rw5HSK20xKYYbei-BD28EQ)
+## 可在此处下载本项目使用的HISI_SDK:[SDK_DOWNLOAD](https://pan.baidu.com/s/13HCfq9pm6CKFtMwxJYxt5g)
 
 [1]:https://github.com/WqXiaobao/HISILICON_IPC/blob/master/pictures/hisilicon.jpg
