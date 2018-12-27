@@ -1,5 +1,3 @@
-![hisi-logo][1]
-
 # HISILICON_IPC
 ------
 此仓库为个人用**海思HI3518EV200**开发**IP_CAMERA**的记录。
@@ -31,4 +29,3 @@
 
 ## 可在此处下载本项目使用的HISI_SDK:[SDK_DOWNLOAD](https://pan.baidu.com/s/13HCfq9pm6CKFtMwxJYxt5g)
 
-[1]:https://github.com/WqXiaobao/HISILICON_IPC/blob/master/pictures/hisilicon.jpg
