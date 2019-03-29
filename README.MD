@@ -14,7 +14,7 @@
 
 ## 2.本方案系统整体架构介绍
 ### 硬件上
-> * HI3518E单芯片提供：CPU+DSP+内置64MB DDR + ETHERNET MAC
+> * HI3518E单芯片：CPU+DSP+内置64MB DDR + ETHERNET MAC
 > * 外置16M SPIFlash用来存放程序（uboot、kernel、rfs、app）
 > * SDcard扩展提供用户数据区
 > * 板载ethernet PHY和USB HOST扩展WIFI提供联网能力
@@ -25,7 +25,7 @@
 > * SPIFlash分区烧录uboot.bin、zImage、rootfs，并设置合理的环境变量使系统启动。
 > * sensor、ethernet等硬件均需要驱动支持
 > * app实现视频采集、编码压缩、网络传输等核心工作
-> * 各种专业工作（譬如利用内置DSP实现h.264编码压缩）都由海思开发好并以ko的形式提供，有API文档参考，app编写者在sample的帮助下逐步实现自定义的功能。
+> * 各种专业工作由海思开发好并以ko的形式提供。
 
 ## 可在此处下载本项目使用的HISI_SDK:[SDK_DOWNLOAD](https://pan.baidu.com/s/1jpmh3GCv9kPewSqKCXY99g)
 
