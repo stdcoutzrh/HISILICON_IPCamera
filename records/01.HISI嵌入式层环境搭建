@@ -1,8 +1,4 @@
-# 嵌入式层环境搭建
-
-------
-
-### 1.将SDK复制到虚拟机Ubuntu系统下，解压SDK。
+## 1.1将SDK复制到虚拟机Ubuntu系统下，解压SDK。
 ```cmd
 cp /mnt/hgfs/winshare/Hi3518E_V200R001C01SPC030K/01.software/board/Hi3518E_SDK_V1.0.3.0.tgz  ./
 tar -xvf Hi3518E_SDK_V1.0.3.0.tgz 
@@ -10,7 +6,7 @@ source sdk.cleanup  //清理SDK
 source sdk.unpack 
 ```
 
-### 2.安装HISI交叉编译工具链
+## 1.2安装HISI交叉编译工具链
 ```cmd
 cd opensource/toolchain/arm-hisiv300-linux/
 sudo ./cross.install.v300
@@ -29,7 +25,7 @@ source ~/.bashrc
  sudo aptitude install lib32stdc++6-4.8-dbg
 ```
 
-### 3.编译osdrv
+## 1.3编译osdrv
 ```cmd
 cd osdrv
 make OSDRV_CROSS=arm-hisiv300-linux CHIP=hi3518ev200 distclean
@@ -40,25 +36,29 @@ make OSDRV_CROSS=arm-hisiv300-linux CHIP=hi3518ev200 all
 sudo rm /bin/sh
 sudo ln -s /bin/bash /bin/sh
 ```
-
+---------------------------------------------------
 ②出错："mkimage" command not found 
 ```cmd
  sudo cp opensource/uboot/u-boot-2010.06/tools/mkimage /usr/local/bin/
 ```
-
+---------------------------------------------------
 ③出错：fatal error: zlib.h: No such file or directory
 ```cmd
 cp tools/pc/zlib/tmp/include/zlib.h tools/pc/jffs2_tool/tmp/include/
 cp tools/pc/zlib/tmp/include/zconf.h tools/pc/jffs2_tool/tmp/include/
 cp tools/pc/zlib/tmp/lib/libz.* tools/pc/jffs2_tool/tmp/lib/
 ```
+---------------------------------------------------
 ④出错：storage size of ‘hints’ isn’t known
 修改操作系统头文件/usr/include/netdb.h，将宏__USE_XOPEN2K注释(注意#ifdef与#endif是一一对应的)
 
+---------------------------------------------------
 ⑤修改makefile，将hipctools：（205行）下的内容全部删除。然后：
 ```cmd
 cp tools/pc/jffs2_tool/tmp/mtd-utils-1.5.0/mkfs.jffs2 pub/bin/pc/
 ```
+
+---------------------------------------------------
 ⑥出现---------finish osdrv work
 至此编译完成，在pub/image_uclibc/目录下有
 rootfs_hi3518ev200_128k.jffs2      rootfs_hi3518ev200_64k.jffs2
@@ -66,7 +66,8 @@ rootfs_hi3518ev200_256k.jffs2      u-boot-hi3518ev200.bin
 rootfs_hi3518ev200_2k_4bit.yaffs2  uImage_hi3518ev200
 
 
-### 4.uboot的烧写和flash分区
+## 1.4uboot的烧写和flash分区
+对于裸机可以先使用HI-tool这个工具烧录U-BOOT，然后通过tftp来烧录其他的。
 
 | 分区名      | 分区大小 | 起始地址  |截止地址|             
 | --------   | -----:  |  -----:| -----:|               
@@ -76,10 +77,10 @@ rootfs_hi3518ev200_2k_4bit.yaffs2  uImage_hi3518ev200
 
 
 
-### 5.kernel和rootfs烧录与启动系统
-烧录命令
----------------------------------------------------
-tftp更新并重新烧写uboot的命令序列：
+## 1.5kernel和rootfs烧录与启动系统
+
+
+tftp更新并重新烧写uboot的命令：
 ```cmd
 mw.b 0x82000000 ff 0x100000
 tftp 0x82000000 u-boot-hi3518ev200.bin
@@ -88,7 +89,7 @@ sf erase 0x0 0x100000
 sf write 0x82000000 0x0 0x100000
 ```
 --------------------------------------------------
-tftp更新并重新烧写kernel的命令序列：
+tftp更新并重新烧写kernel的命令：
 ```cmd
 mw.b 0x82000000 ff 0x300000
 tftp 0x82000000 uImage_hi3518ev200
@@ -97,7 +98,7 @@ sf erase 0x100000 0x300000
 sf write 0x82000000 0x100000 0x300000
 ```
 ---------------------------------------------------
-tftp更新并重新烧写rootfs的命令序列：
+tftp更新并重新烧写rootfs的命令：
 ```cmd
 mw.b 0x82000000 ff 0xc00000
 tftp 0x82000000 rootfs_hi3518ev200_64k.jffs2
@@ -105,18 +106,26 @@ sf probe 0
 sf erase 0x400000 0xc00000
 sf write 0x82000000 0x400000 0xc00000
 ```
+---------------------------------------------------
+设置bootcmd和bootargs：
+```cmd
+set bootcmd 'sf probe 0;sf read 0x82000000 0x100000 0x300000;bootm 0x82000000'
+set bootargs mem=32M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=jffs2 mtdparts=hi_sfc:1024K(boot),3072K(kernel),12288K(rootfs)
+```
 
-### 6.MPP部署
+## 1.6MPP部署
 ①开发板启动自动挂载主机
 在profile中添加设置网卡IP地址,添加自动挂载主机nfs服务器
 ```cmd
-mount -t nfs -o nolock 192.168.1.141:/home/peco/rootfs /mnt
+mount -t nfs -o nolock 192.168.1.19:/home/peco/rootfs /mnt
 ```
+---------------------------------------------------
 ②部署ko文件
 ```cmd
 ./load3518e -i -sensor ar0130 -osmem 32 -total 64
 ```
 
-# 至此嵌入式层环境搭建完成。
+ **至此嵌入式层环境搭建完成。**
+
 
 
