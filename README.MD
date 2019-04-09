@@ -2,11 +2,6 @@
 
 ---------------------------------------------------
 
-<center>
-<img src="https://github.com/StdCoutZRH/HISILICON_IPC/blob/v1.0_rtsp/pictures/hisilicon.jpg">
-
----------------------------------------------------
-
 # HISILICON_IPC
 
 ---------------------------------------------------
