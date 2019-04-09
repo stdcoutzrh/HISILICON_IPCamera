@@ -2,8 +2,11 @@
 
 ---------------------------------------------------
 
+<div align=center>![logo](https://github.com/StdCoutZRH/HISILICON_IPC/blob/v1.0_rtsp/pictures/hisilicon.jpg)
+
+---------------------------------------------------
 # HISILICON_IPC
-------
+---------------------------------------------------
 
 此仓库为个人用**海思HI3518EV200**开发**IP_CAMERA**(1.0版本)的记录。
 
