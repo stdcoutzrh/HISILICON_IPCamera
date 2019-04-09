@@ -1,9 +1,8 @@
 ![logo](https://github.com/StdCoutZRH/HISILICON_IPC/blob/v1.0_rtsp/pictures/hisilicon.jpg)
 
 ---------------------------------------------------
-
-<div align="center">![logo](https://github.com/StdCoutZRH/HISILICON_IPC/blob/v1.0_rtsp/pictures/hisilicon.jpg)
-
+<center>
+<img src="https://github.com/StdCoutZRH/HISILICON_IPC/blob/v1.0_rtsp/pictures/hisilicon.jpg" width="50%">
 ---------------------------------------------------
 # HISILICON_IPC
 ---------------------------------------------------
