@@ -1,0 +1,188 @@
+# Hisilicon Hi3518e sample Makefile.param
+
+ifeq ($(PARAM_FILE), )
+     PARAM_FILE:=../../../mpp/Makefile.param
+     include $(PARAM_FILE)
+endif
+
+ifeq ($(WDR),)
+WDR :=n
+endif
+
+CHIP_ID ?= CHIP_HI3516C_V200
+#CHIP_ID ?= CHIP_HI3518E_V200
+#CHIP_ID ?= CHIP_HI3518E_V201
+
+################# select sensor type for your sample ####################
+
+#SENSOR_TYPE ?= APTINA_9M034_DC_720P_30FPS
+
+SENSOR_TYPE ?= SONY_IMX222_DC_1080P_30FPS
+#SENSOR_TYPE ?= SONY_IMX222_DC_720P_30FPS
+
+#SENSOR_TYPE ?= APTINA_AR0130_DC_720P_30FPS
+
+#SENSOR_TYPE ?= PANASONIC_MN34222_MIPI_1080P_30FPS
+
+#SENSOR_TYPE ?= APTINA_AR0230_HISPI_1080P_30FPS
+
+#SENSOR_TYPE ?= OMNIVISION_OV9712_DC_720P_30FPS
+#SENSOR_TYPE ?= OMNIVISION_OV9732_DC_720P_30FPS
+#SENSOR_TYPE ?= OMNIVISION_OV9750_MIPI_720P_30FPS
+#SENSOR_TYPE ?= OMNIVISION_OV9752_MIPI_720P_30FPS
+
+#SENSOR_TYPE ?= OMNIVISION_OV2718_MIPI_1080P_25FPS
+
+##########################################################################
+
+SENSOR_LIBS := $(REL_LIB)/libisp.a
+
+ifeq ($(SENSOR_TYPE), APTINA_AR0130_DC_720P_30FPS)
+    SENSOR_LIBS += $(REL_LIB)/libsns_ar0130.a
+endif
+
+ifeq ($(SENSOR_TYPE), APTINA_AR0130_DC_960P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ar0130.a
+endif
+
+ifeq ($(SENSOR_TYPE), APTINA_9M034_DC_720P_30FPS)
+    SENSOR_LIBS += $(REL_LIB)/libsns_9m034.a
+endif
+
+ifeq ($(SENSOR_TYPE), APTINA_9M034_DC_960P_30FPS)
+       SENSOR_LIBS += $(REL_LIB)/libsns_9m034.a
+endif
+
+ifeq ($(SENSOR_TYPE), SONY_IMX222_DC_1080P_30FPS)
+    SENSOR_LIBS += $(REL_LIB)/libsns_imx222.a
+endif
+
+ifeq ($(SENSOR_TYPE), SONY_IMX222_DC_720P_30FPS)
+    SENSOR_LIBS += $(REL_LIB)/libsns_imx222.a
+endif
+
+
+ifeq ($(SENSOR_TYPE), APTINA_AR0230_HISPI_1080P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ar0230.a
+endif
+
+ifeq ($(SENSOR_TYPE), PANASONIC_MN34222_MIPI_1080P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_mn34222.a
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV9712_DC_720P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ov9712.a
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV9732_DC_720P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ov9732.a
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV9750_MIPI_720P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ov9750.a
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV9752_MIPI_720P_30FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ov9752.a
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV2718_MIPI_1080P_25FPS)
+      SENSOR_LIBS += $(REL_LIB)/libsns_ov2718.a
+endif
+
+#iniparser
+SENSOR_LIBS += $(REL_LIB)/lib_cmoscfg.a
+SENSOR_LIBS += $(REL_LIB)/lib_iniparser.a
+#########################################################################
+
+COMMON_DIR:=$(PWD)/../common
+
+INC_FLAGS := -I$(COMMON_DIR)
+INC_FLAGS += -I$(REL_INC)
+INC_FLAGS += -I$(SDK_PATH)/mpp/component/acodec
+
+ifeq ($(MPP_BUILD), y)
+	INC_FLAGS += -I$(SDK_PATH)/mpp/$(EXTDRV)/tw2865
+	INC_FLAGS += -I$(SDK_PATH)/mpp/$(EXTDRV)/tlv320aic31
+else
+	INC_FLAGS += -I$(SDK_PATH)/mpp/extdrv/tw2865
+	INC_FLAGS += -I$(SDK_PATH)/mpp/$(EXTDRV)/tlv320aic31
+endif
+
+ISP_VERSION := ISP_V2
+SENSOR_LIBS += $(REL_LIB)/lib_hiae.a
+SENSOR_LIBS += $(REL_LIB)/lib_hiawb.a
+SENSOR_LIBS += $(REL_LIB)/lib_hiaf.a
+
+SENSOR_LIBS += $(REL_LIB)/lib_hidefog.a
+
+MPI_LIBS := $(REL_LIB)/libmpi.a
+MPI_LIBS += $(REL_LIB)/libive.a
+MPI_LIBS += $(REL_LIB)/libmd.a
+
+CFLAGS := -Wall -g $(INC_FLAGS) -D$(HIARCH) -DHICHIP=$(HICHIP) -DSENSOR_TYPE=$(SENSOR_TYPE) -D$(HIDBG) -D$(HI_FPGA) -DCHIP_ID=$(CHIP_ID) -lpthread -lm -ldl -D$(ISP_VERSION)
+
+ifeq ($(CHIP_ID), CHIP_HI3516C_V200)
+	CFLAGS += -Dhi3516cv200
+endif
+ifeq ($(CHIP_ID), CHIP_HI3518E_V200)
+	CFLAGS += -Dhi3518ev200
+endif
+ifeq ($(CHIP_ID), CHIP_HI3518E_V201)
+	CFLAGS += -Dhi3518ev201
+endif
+
+
+ifeq ($(SENSOR_TYPE), APTINA_AR0230_HISPI_1080P_30FPS)
+	CFLAGS += -DHI_MIPI_ENABLE
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV4682_MIPI_1080P_30FPS)
+	CFLAGS += -DHI_MIPI_ENABLE
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV4682_MIPI_720P_30FPS)
+	CFLAGS += -DHI_MIPI_ENABLE
+endif
+
+ifeq ($(SENSOR_TYPE), PANASONIC_MN34222_MIPI_1080P_30FPS)
+	CFLAGS += -DHI_MIPI_ENABLE
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV9750_MIPI_720P_30FPS)
+	CFLAGS += -DHI_MIPI_ENABLE
+endif
+
+ifeq ($(SENSOR_TYPE), OMNIVISION_OV9752_MIPI_720P_30FPS)
+	CFLAGS += -DHI_MIPI_ENABLE
+endif
+
+################ select audio codec type for your sample ################
+ACODEC_TYPE ?= ACODEC_TYPE_INNER
+#external acodec
+#ACODEC_TYPE ?= ACODEC_TYPE_AK7756
+#ACODEC_TYPE ?= ACODEC_TYPE_TLV320AIC31
+
+ifeq ($(ACODEC_TYPE), ACODEC_TYPE_INNER)
+	CFLAGS += -DHI_ACODEC_TYPE_INNER
+endif
+
+ifeq ($(ACODEC_TYPE), ACODEC_TYPE_AK7756)
+	CFLAGS += -DHI_ACODEC_TYPE_AK7756
+endif
+
+ifeq ($(ACODEC_TYPE), ACODEC_TYPE_TLV320AIC31)
+	CFLAGS += -DHI_ACODEC_TYPE_TLV320AIC31
+endif
+#########################################################################
+
+CFLAGS += $(LIBS_CFLAGS)
+CFLAGS += -DLCD_ILI9342
+
+COMM_SRC := $(wildcard $(COMMON_DIR)/*.c)
+
+#DEL_SRC  := $(COMMON_DIR)/sample_comm_audio.c
+#COMM_SRC := $(filter-out $(DEL_SRC), $(COMM_SRC))
+
+COMM_OBJ := $(COMM_SRC:%.c=%.o)
+
