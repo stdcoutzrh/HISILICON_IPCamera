@@ -1,0 +1,5 @@
+0x00000000	hi_isp_sync_task_register	/home/pub/tag/Hi3518EV200R001C01SPC030B030/mpp/component/isp/isp_hi3518e/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	hi_isp_sync_task_unregister	/home/pub/tag/Hi3518EV200R001C01SPC030B030/mpp/component/isp/isp_hi3518e/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	g_stIspExpFunc	/home/pub/tag/Hi3518EV200R001C01SPC030B030/mpp/component/isp/isp_hi3518e/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	ISP_GetDCFInfo	/home/pub/tag/Hi3518EV200R001C01SPC030B030/mpp/component/isp/isp_hi3518e/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	g_stIspPirisExpFunc	/home/pub/tag/Hi3518EV200R001C01SPC030B030/mpp/component/isp/isp_hi3518e/firmware/drv/hi3518e_isp	EXPORT_SYMBOL

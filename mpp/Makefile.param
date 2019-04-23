@@ -1,0 +1,266 @@
+# Makefile.param 
+# Only global variable should be defined here.
+# All the variables must be used as "export" and "?=".
+# Otherwise, there will be some errors, when Makefile.param is nested.
+
+# Use this file as the following sample
+# ifeq ($(PARAM_FILE), )
+#     PARAM_FILE:=../Makefile.param
+#     include $(PARAM_FILE)
+# endif
+
+# Define the default OS link directory.
+export HIWORK_PATH?=/hiwork
+
+export ARCH=arm
+export MPP_BUILD=n
+
+#Change ISP parameter config mode 
+#Default "y" is ini config mode, else "n" source code config mode
+export ISP_INI_CONFIG=n
+
+# use HIARCH indicate chip, use libc to choose cross compiler.
+export HIARCH?=hi3518e
+export LIBC?=uclibc
+
+# Whether support the debug information. HI_DEBUG or HI_RELEASE
+export HIDBG?=HI_RELEASE
+
+# cpu type single/big-little
+ifeq ($(HIARCH),hi3519)
+export CPU_TYPE?=
+else
+export CPU_TYPE?=
+endif
+
+# Whether open -g 
+#export HIGDB?=y
+export HIGDB?=n
+
+# FPGA board or not
+export FPGA?=n
+
+ifeq ($(HIARCH), )
+$(error HIARCH not defined! Please check!)
+endif
+
+ifeq ($(LIBC), )
+$(error LIBC not defined! Please check!)
+endif
+
+ifeq ($(HIARCH),hi3516a)
+	export HICHIP?=0x3516A100
+	export ARCH_DIR?=hi3516a
+endif
+
+ifeq ($(HIARCH),hi3519)
+	export HICHIP?=0x3519100
+	export ARCH_DIR?=hi3519
+endif
+
+ifeq ($(HIARCH),hi3518e)
+	export HICHIP?=0x3518E200
+	export ARCH_DIR?=hi3518e
+endif
+
+ifeq ($(HIDBG),HI_DEBUG)
+	DBG_FLAG=0
+else
+	DBG_FLAG=0
+endif
+
+
+ifeq ($(HIARCH),hi3536)
+	export PRODUCT?=NVRDVR
+else
+	export PRODUCT?=IPC
+endif
+
+# use C01 to indicate uclibc, C02 to  indicate glibc, C00 to indicate FPGA.
+ifeq ($(LIBC),glibc)
+    ifeq ($(FPGA), y)
+	export CVER?=.C$(DBG_FLAG)3
+    else
+	export CVER?=.C$(DBG_FLAG)2
+    endif
+else ifeq ($(FPGA), y)
+	export CVER?=.C$(DBG_FLAG)0
+else
+	export CVER?=.C$(DBG_FLAG)1
+endif
+
+ifeq ($(FPGA),y)
+	export HI_FPGA:=HI_FPGA
+	export EXTDRV:=extdrv/$(HIARCH)_fpga
+else
+	export HI_FPGA:=HI_XXXX
+	export EXTDRV:=extdrv/$(HIARCH)
+endif
+
+# Get the local SDK_ROOT path or RELEASE_ROOT path by PARAM_FILE.
+# PARAM_FILE is configed at Makefile before include this file
+export PARAM_FILE
+export SDK_PATH?=$(shell cd $(shell pwd)/`dirname $(PARAM_FILE)`/..; pwd)
+export MPP_PATH?=$(shell cd $(shell pwd)/`dirname $(PARAM_FILE)`; pwd)
+export SHELF_ROOT?=$(MPP_PATH)/code/shelf
+export DRV_ROOT?=$(SDK_PATH)/drv
+
+##############################################################################
+export KERNEL_NAME="linux-3.4.y"
+
+ifeq ($(HIARCH), hi3519)
+	export KERNEL_NAME="linux-3.18.y"
+endif
+
+# Allocated the linux position
+ifneq ($(shell ls $(HIWORK_PATH)/osdrv$(HIARCH)$(CVER)), )
+	ifeq ($(HIARCH),hi3519)
+		export LINUX_ROOT?=$(HIWORK_PATH)/osdrv$(HIARCH)$(CVER)/$(CPU_TYPE)/opensource/kernel/$(KERNEL_NAME)		
+	else
+		export LINUX_ROOT?=$(HIWORK_PATH)/osdrv$(HIARCH)$(CVER)/opensource/kernel/$(KERNEL_NAME)
+	endif	
+else
+	export LINUX_ROOT?=$(SDK_PATH)/osdrv/opensource/kernel/$(KERNEL_NAME)
+endif
+
+##############################################################################
+
+# Define cross compiler
+ifeq ($(HIARCH), hi3519)
+        ifeq ($(LIBC),glibc)
+                export CROSS_COMPILE?= arm-hisiv600-linux-
+                export CROSS?= arm-hisiv600-linux-
+        else
+                export CROSS_COMPILE?=arm-hisiv500-linux-
+                export CROSS?=arm-hisiv500-linux-
+        endif
+else
+	ifeq ($(LIBC),glibc)
+		export CROSS_COMPILE?= arm-hisiv400-linux-
+		export CROSS?= arm-hisiv400-linux-
+	else
+		export CROSS_COMPILE?=arm-hisiv300-linux-
+		export CROSS?=arm-hisiv300-linux-
+	endif
+endif
+
+export CC:=$(CROSS)gcc
+export AR:=$(CROSS)ar
+
+
+ifeq ($(HIARCH), hi3519)
+export MPP_CFLAGS:= -Wall -Wno-date-time -Wno-error=implicit-function-declaration
+export DRV_CFLAGS:= -Wno-error=date-time -Wno-error=implicit-function-declaration
+else
+export MPP_CFLAGS:= -Wall
+export DRV_CFLAGS:= 
+endif
+
+ifeq ($(HIGDB), y)
+	MPP_CFLAGS += -g
+endif
+
+# Define the object output directory
+ifeq ($(MPP_BUILD), y)
+
+ifeq ($(HIARCH),hi3519)
+	export REL_DIR=$(SDK_PATH)/mpp/release/$(HIARCH)/$(CPU_TYPE)
+else
+	export REL_DIR=$(SDK_PATH)/mpp/release/$(HIARCH)
+endif
+	export SAMPLE_DIR=$(SDK_PATH)/mpp/sample/$(HIARCH)
+
+else
+#### MPP_BUILD=n ######
+
+ifeq ($(HIARCH),hi3519)
+	# hi3519 config
+	export REL_DIR=$(SDK_PATH)/mpp_$(CPU_TYPE)
+else
+	export REL_DIR=$(SDK_PATH)/mpp
+endif
+	
+	EXTDRV=extdrv
+	export SAMPLE_DIR=$(REL_DIR)/sample
+endif
+
+export REL_INC := $(REL_DIR)/include
+export REL_LIB := $(REL_DIR)/lib
+export REL_KO  := $(REL_DIR)/ko
+
+# Define the param of audio 
+export AUDIO_PATH?=$(SDK_PATH)/mpp/component/audio/lib/$(CROSS)
+
+export AUDIO_LIBA ?= $(REL_LIB)/libVoiceEngine.a\
+	             $(REL_LIB)/libupvqe.a\
+				 $(REL_LIB)/libdnvqe.a
+
+export AUDIO_LIBS ?= $(REL_LIB)/libVoiceEngine.so\
+	             $(REL_LIB)/libupvqe.so\
+				 $(REL_LIB)/libdnvqe.so
+
+# include the audio config file of platform
+
+
+# Define the lib of jpeg codec
+export JPEGD_PATH?=$(SDK_PATH)/mpp/component/jpegd
+export JPEGD_LIBA:=$(REL_LIB)/libjpeg.a
+
+export HIMEM_LIBA := $(REL_LIB)/libmem.a
+
+###############################################################################
+# LIB GLOBAL CFLAGS
+ifeq ($(HIARCH),hi3516a)
+	export LIBS_CFLAGS    = -mcpu=cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4 -ffunction-sections
+	export LIBS_LD_CFLAGS = -mcpu=cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4
+endif
+
+ifeq ($(HIARCH),hi3518e)
+	export LIBS_CFLAGS    =
+	export LIBS_LD_CFLAGS =
+endif
+
+ifeq ($(HIARCH),hi3519)
+
+ifeq ($(CPU_TYPE),single)
+	export LIBS_CFLAGS    = -mcpu=cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4
+	export LIBS_LD_CFLAGS = -mcpu=cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4
+else
+	export LIBS_CFLAGS    = -mcpu=cortex-a17.cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4
+	export LIBS_LD_CFLAGS = -mcpu=cortex-a17.cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4
+
+endif
+
+endif
+
+# common CFLAGS
+LIBS_CFLAGS +=  -mno-unaligned-access -fno-aggressive-loop-optimizations -ldl
+LIBS_LD_CFLAGS += -mno-unaligned-access -fno-aggressive-loop-optimizations -ldl
+
+###############################################################################
+
+#********************* Macro for version management***************************** 
+VER_X ?= 1
+VER_Y ?= 0
+VER_Z ?= 0
+VER_P ?= 0
+VER_B ?= 10
+MPP_CFLAGS += -DVER_X=$(VER_X) -DVER_Y=$(VER_Y) -DVER_Z=$(VER_Z) -DVER_P=$(VER_P) -DVER_B=$(VER_B)
+#******************************************************************************* 
+
+# include the config file of platform
+-include $(SDK_PATH)/mpp/configs/config.mk
+
+export CONFIG_JPEGEDCF=y
+
+ifeq ($(CONFIG_JPEGEDCF), y)
+	MPP_CFLAGS += -D ENABLE_JPEGEDCF 
+endif	
+
+ifeq ($(CONFIG_LOWDELAY), y)
+         MPP_CFLAGS += -DENABLE_LOWDELAY
+endif
+
+
+
+# End!!
