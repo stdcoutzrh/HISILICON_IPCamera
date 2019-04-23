@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> v1.0_rtsp
 ![logo](https://github.com/StdCoutZRH/HISILICON_IPC/blob/v1.0_rtsp/pictures/hisilicon.jpg)
 
 ---------------------------------------------------
@@ -7,12 +10,19 @@
 
 ---------------------------------------------------
 
+<<<<<<< HEAD
 此仓库为个人用**海思HI3518EV200**开发**IP_CAMERA**的记录。
 
 ## 1.master branch
 ### key words:
 AR0130、ISP（image signal processing）、h.264、rtsp、MP4。       
  
+=======
+此仓库为个人用**海思HI3518EV200**开发**IP_CAMERA**(1.0版本)的记录。
+
+## 1.v1.0_rtsp
+>* 实现了rtsp传输视频码流的功能。
+>>>>>>> v1.0_rtsp
 
 ## 2.本方案系统整体架构介绍：
 ### 硬件上：
