@@ -27,5 +27,5 @@ This repository records my personal **IP_CAMERA** development by HISILICON 3518E
 > * SPI Flash partition burns uboot.bin,zImage and rootfs,and sets reasonable environment variables to start the system.
 > * App completes the core tasks of video capture, coding and compression, network transmission, etc.
 
-## 3.You can download HISI_SDK for this project here.:[SDK_DOWNLOAD](https://pan.baidu.com/s/1jpmh3GCv9kPewSqKCXY99g)
+## 3.You can download HISI_SDK for this project here:[SDK_DOWNLOAD](https://pan.baidu.com/s/1jpmh3GCv9kPewSqKCXY99g)
 
