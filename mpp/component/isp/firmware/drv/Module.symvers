@@ -1,0 +1,5 @@
+0x00000000	hi_isp_sync_task_register	/home/aston/sambashare/Hi3518E_SDK_V1.0.3.0/mpp/component/isp/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	hi_isp_sync_task_unregister	/home/aston/sambashare/Hi3518E_SDK_V1.0.3.0/mpp/component/isp/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	g_stIspExpFunc	/home/aston/sambashare/Hi3518E_SDK_V1.0.3.0/mpp/component/isp/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	ISP_GetDCFInfo	/home/aston/sambashare/Hi3518E_SDK_V1.0.3.0/mpp/component/isp/firmware/drv/hi3518e_isp	EXPORT_SYMBOL
+0x00000000	g_stIspPirisExpFunc	/home/aston/sambashare/Hi3518E_SDK_V1.0.3.0/mpp/component/isp/firmware/drv/hi3518e_isp	EXPORT_SYMBOL

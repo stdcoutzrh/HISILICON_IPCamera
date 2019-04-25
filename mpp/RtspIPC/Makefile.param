@@ -1,0 +1,62 @@
+ifeq ($(PARAM_FILE), )
+     PARAM_FILE:=../../../mpp/Makefile.param
+     include $(PARAM_FILE)
+endif
+
+ifeq ($(WDR),)
+WDR :=n
+endif
+
+CHIP_ID ?= CHIP_HI3518E_V200
+
+SENSOR_TYPE ?= APTINA_AR0130_DC_720P_30FPS
+
+
+SENSOR_LIBS := $(REL_LIB)/libisp.a
+ifeq ($(SENSOR_TYPE), APTINA_AR0130_DC_720P_30FPS)
+    SENSOR_LIBS += $(REL_LIB)/libsns_ar0130.a
+endif
+
+#iniparser
+SENSOR_LIBS += $(REL_LIB)/lib_cmoscfg.a
+SENSOR_LIBS += $(REL_LIB)/lib_iniparser.a
+#########################################################################
+
+COMMON_DIR:=$(PWD)/../common
+
+INC_FLAGS := -I$(COMMON_DIR)
+INC_FLAGS += -I$(REL_INC)
+INC_FLAGS += -I$(SDK_PATH)/mpp_rtspipc/component/acodec
+
+ifeq ($(MPP_BUILD), y)
+	INC_FLAGS += -I$(SDK_PATH)/mpp_rtspipc/$(EXTDRV)/tw2865
+	INC_FLAGS += -I$(SDK_PATH)/mpp_rtspipc/$(EXTDRV)/tlv320aic31
+else
+	INC_FLAGS += -I$(SDK_PATH)/mpp_rtspipc/extdrv/tw2865
+	INC_FLAGS += -I$(SDK_PATH)/mpp_rtspipc/$(EXTDRV)/tlv320aic31
+endif
+
+ISP_VERSION := ISP_V2
+SENSOR_LIBS += $(REL_LIB)/lib_hiae.a
+SENSOR_LIBS += $(REL_LIB)/lib_hiawb.a
+SENSOR_LIBS += $(REL_LIB)/lib_hiaf.a
+
+SENSOR_LIBS += $(REL_LIB)/lib_hidefog.a
+
+MPI_LIBS := $(REL_LIB)/libmpi.a
+MPI_LIBS += $(REL_LIB)/libive.a
+MPI_LIBS += $(REL_LIB)/libmd.a
+
+CFLAGS := -Wall -g $(INC_FLAGS) -D$(HIARCH) -DHICHIP=$(HICHIP) -DSENSOR_TYPE=$(SENSOR_TYPE) -D$(HIDBG) -D$(HI_FPGA) -DCHIP_ID=$(CHIP_ID) -lpthread -lm -ldl -D$(ISP_VERSION)
+
+ifeq ($(CHIP_ID), CHIP_HI3518E_V200)
+	CFLAGS += -Dhi3518ev200
+endif
+
+#########################################################################
+
+CFLAGS += $(LIBS_CFLAGS)
+CFLAGS += -DLCD_ILI9342
+
+COMM_SRC := $(wildcard $(COMMON_DIR)/*.c)
+COMM_OBJ := $(COMM_SRC:%.c=%.o)
