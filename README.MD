@@ -7,13 +7,13 @@
 This repository records my personal **IP_CAMERA** development by HISILICON 3518EV200.🌼
 
 ### Key Words:
-**HISILICON3518EV200**,**AR0130**,**H.264**,**RTSP**,**MP4**,**IPCamera**.       
+**HISILICON3518EV200**,**AR0130**,**H.264**,**RTSP**,**MP4**,**OSD**,**IPCamera**.       
  
 ---------------------------------------------------
 
 ## 1.Version Introduction
 * [RtspIPC](https://github.com/StdCoutZRH/HISILICON_IPCamera/tree/RtspIPCamera) : Realized the function of transmitting video stream through RTSP protocol.
-* [master](https://github.com/StdCoutZRH/HISILICON_IPCamera/tree/master) :Currently under development.
+* [master](https://github.com/StdCoutZRH/HISILICON_IPCamera/tree/master) :Currently under development.Realized the function of transmitting video stream through RTSP protocol,save stream to MP4 and OSD.
 
 ## 2.Introduction to the System Architecture of the Scheme
 ### Hardware：
