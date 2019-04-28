@@ -23,6 +23,7 @@ SENSOR_LIBS += $(REL_LIB)/lib_iniparser.a
 #########################################################################
 
 COMMON_DIR:=$(PWD)/../common
+OSD_DIR:=$(PWD)/../osd
 
 INC_FLAGS := -I$(COMMON_DIR)
 INC_FLAGS += -I$(REL_INC)
@@ -59,4 +60,7 @@ CFLAGS += $(LIBS_CFLAGS)
 CFLAGS += -DLCD_ILI9342
 
 COMM_SRC := $(wildcard $(COMMON_DIR)/*.c)
+OSD_SRC := $(wildcard $(OSD_DIR)/*.c)
+
 COMM_OBJ := $(COMM_SRC:%.c=%.o)
+OSD_OBJ := $(OSD_SRC:%.c=%.o)

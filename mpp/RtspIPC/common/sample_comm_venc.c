@@ -1,11 +1,3 @@
-/******************************************************************************
-  Some simple Hisilicon Hi3531 video encode functions.
-
-  Copyright (C), 2010-2011, Hisilicon Tech. Co., Ltd.
- ******************************************************************************
-    Modification:  2011-2 Created
-******************************************************************************/
-
 #ifdef __cplusplus
 #if __cplusplus
 extern "C"{
@@ -1607,9 +1599,8 @@ HI_VOID* SAMPLE_COMM_VENC_GetVencStreamProc(HI_VOID *p)
                      step 2.5 : save frame to file
                     *******************************************************/
                    //s32Ret = SAMPLE_COMM_VENC_SaveStream(enPayLoadType[i], pFile[i], &stStream);
-					//SAMPLE_COMM_VENC_Sentjin(&stStream);
-			SAMPLE_COMM_VENC_MP4(&stStream);
-			//		saveStream(&stStream);
+					SAMPLE_COMM_VENC_Sentjin(&stStream);
+					SAMPLE_COMM_VENC_MP4(&stStream);
 			if (HI_SUCCESS != s32Ret)
                     {
                         free(stStream.pstPack);
