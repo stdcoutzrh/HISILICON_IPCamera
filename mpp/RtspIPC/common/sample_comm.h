@@ -149,7 +149,7 @@ extern HI_VOID* vdRTPSendThread(HI_VOID *p);
 //#define nalu_sent_len        1400
 #define RTP_H264                    96
 #define RTP_AUDIO              97
-#define MAX_RTSP_CLIENT       1
+#define MAX_RTSP_CLIENT       5
 #define RTSP_SERVER_PORT      554
 #define RTSP_RECV_SIZE        1024
 #define RTSP_MAX_VID          (640*1024)
